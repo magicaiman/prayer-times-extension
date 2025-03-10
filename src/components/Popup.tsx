@@ -1,11 +1,12 @@
 import {useEffect, useState} from "react";
-import {getPrayerTimes, prayerTimes} from "../services/PrayerService.ts";
+import {getPrayerTimes, PrayerTimesResult} from "../services/PrayerService.ts";
 
 export default function Popup() {
-    const [prayerTimes, setPrayerTimes] = useState<prayerTimes | undefined>();
+    const [prayerTimes, setPrayerTimes] = useState<PrayerTimesResult | undefined>();
     useEffect(() => {
         const fetchTimes = async () => {
             const times = await getPrayerTimes();
+            console.log(times);
             setPrayerTimes(times);
         };
         fetchTimes();
@@ -16,11 +17,11 @@ export default function Popup() {
             {prayerTimes ? (
                 <div>
                     <ul>
-                        <li>Fajr:{prayerTimes.Fajr}</li>
-                        <li>Dhuhr:{prayerTimes.Dhuhr}</li>
-                        <li>Asr:{prayerTimes.Asr}</li>
-                        <li>Maghrib:{prayerTimes.Maghrib}</li>
-                        <li>Isha:{prayerTimes.Isha}</li>
+                        <li>Fajr:{prayerTimes.fajr}</li>
+                        <li>Dhuhr:{prayerTimes.dhuhr}</li>
+                        <li>Asr:{prayerTimes.asr}</li>
+                        <li>Maghrib:{prayerTimes.maghrib}</li>
+                        <li>Isha:{prayerTimes.isha}</li>
                     </ul>
                 </div>
                 ): (

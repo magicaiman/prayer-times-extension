@@ -1,20 +1,37 @@
-export type prayerTimes = {
-    Fajr: string;
-    Dhuhr: string;
-    Asr: string;
-    Maghrib: string;
-    Isha: string;
+import {CalculationMethod, Coordinates, PrayerTimes} from "adhan";
+
+export type PrayerTimesResult = {
+    fajr: string;
+    dhuhr: string;
+    asr: string;
+    maghrib: string;
+    isha: string;
 }
 
-export async function getPrayerTimes():Promise<prayerTimes | undefined> {
+export async function getPrayerTimes():Promise<PrayerTimesResult | undefined> {
     try{
-     const response = await fetch('https://api.aladhan.com/v1/timingsByCity/05-03-2025?city=Bourg-en-Bresse&country=FR&state=Bourg-en-Bresse&method=3&shafaq=general&tune=5%2C3%2C5%2C7%2C9%2C-1%2C0%2C8%2C-6&timezonestring=Europe%2FParis&calendarMethod=UAQ');
-     if(!response.ok){
-         console.log(response.statusText);
-         return undefined;
-     }
-     const data = await response.json();
-     return data.data.timings;
+        const coordinates = new Coordinates(46.211794825337954, 5.219477477909756);
+        const params = CalculationMethod.MoonsightingCommittee();
+        params.fajrAngle = 12;
+        params.ishaAngle = 12;
+        const date = new Date(2025,2,10);
+        const prayerTimes = new PrayerTimes(coordinates, date, params);
+        const toLocalTime = (time: Date | null): string =>
+            time
+                ?  time.toLocaleString("fr-FR", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    timeZone: "Europe/Paris",
+                })
+                : "N/A";
+
+        return {
+            fajr: toLocalTime(prayerTimes.fajr),
+            dhuhr: toLocalTime(prayerTimes.dhuhr),
+            asr: toLocalTime(prayerTimes.asr),
+            maghrib: toLocalTime(prayerTimes.maghrib),
+            isha: toLocalTime(prayerTimes.isha),
+        };
     }catch (e) {
         console.error(e);
         return undefined;
