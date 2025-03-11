@@ -1,5 +1,6 @@
 import {useEffect, useState} from "react";
 import {getPrayerTimes, PrayerTimesResult} from "../services/PrayerService.ts";
+import TimeCard from "./TimeCard.tsx";
 
 export default function Popup() {
     const [prayerTimes, setPrayerTimes] = useState<PrayerTimesResult | undefined>();
@@ -15,14 +16,12 @@ export default function Popup() {
         <div>
             <h1>Heures de prière</h1>
             {prayerTimes ? (
-                <div>
-                    <ul>
-                        <li>Fajr:{prayerTimes.fajr}</li>
-                        <li>Dhuhr:{prayerTimes.dhuhr}</li>
-                        <li>Asr:{prayerTimes.asr}</li>
-                        <li>Maghrib:{prayerTimes.maghrib}</li>
-                        <li>Isha:{prayerTimes.isha}</li>
-                    </ul>
+                <div className="flex space-y-4">
+                    <TimeCard prayerName={'Fajr'} prayerTime={prayerTimes.fajr}></TimeCard>
+                    <TimeCard prayerName={'Dhuhr'} prayerTime={prayerTimes.dhuhr}></TimeCard>
+                    <TimeCard prayerName={'Asr'} prayerTime={prayerTimes.asr}></TimeCard>
+                    <TimeCard prayerName={'Maghrib'} prayerTime={prayerTimes.maghrib}></TimeCard>
+                    <TimeCard prayerName={'Isha'} prayerTime={prayerTimes.isha}></TimeCard>
                 </div>
                 ): (
                 <p>Chargement en cours</p>

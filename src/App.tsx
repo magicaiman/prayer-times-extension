@@ -3,9 +3,9 @@ import Popup from "./components/Popup.tsx";
 function App() {
 
   return (
-    <>
-      <Popup></Popup>
-    </>
+      <>
+          <Popup></Popup>
+      </>
   )
 }
 
